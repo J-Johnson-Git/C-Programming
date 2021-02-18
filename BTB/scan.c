@@ -14,14 +14,18 @@ void scan_trace(FILE *input_file)
 	char current_PC[ADDRESS_LENGTH + 1] = "";  //fgets needs to read \n chars for strcpy to copy correctly
 	char next_PC[ADDRESS_LENGTH + 1] = "";
 
+	int next_PC_index = 0;
+	int current_PC_index = 0;
 	fgets(current_PC, ADDRESS_LENGTH + 1, input_file);  //preload current_PC with first entry
 	while (fgets(next_PC, ADDRESS_LENGTH + 1, input_file))
 	{
-		if (index_calc(next_PC) != (index_calc(current_PC) + 1))  //branch condition, adding to BTB
+		current_PC_index = index_calc(current_PC);
+		next_PC_index = index_calc(next_PC);
+		if (next_PC_index != (current_PC_index + 1))  //branch condition, adding to BTB
 		{
-			BTB_array[index_calc(current_PC)].entry = index_calc(current_PC);
-			strcpy(BTB_array[index_calc(current_PC)].current_PC, current_PC);
-			strcpy(BTB_array[index_calc(current_PC)].next_PC, next_PC);
+			BTB_array[current_PC_index].entry = current_PC_index;
+			strcpy(BTB_array[current_PC_index].current_PC, current_PC);
+			strcpy(BTB_array[current_PC_index].next_PC, next_PC);
 		}
 		strcpy(current_PC, next_PC);  //copy next_PC back into current_PC when finished with comparisons/calcs
 	}
