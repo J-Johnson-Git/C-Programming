@@ -1,2 +1,2 @@
 # C-Programming
-Projects done using the C language
+Projects created using the C language
